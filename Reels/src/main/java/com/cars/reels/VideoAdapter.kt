@@ -173,13 +173,7 @@ class VideoAdapter(
                 val showBanner = bannerAdParams["shouldRun"] as Boolean && swipeCount % (bannerAdParams["frequency"] as Int) == 0
                 val showInterstitial = interAdParams["shouldRun"] as Boolean && swipeCount % (interAdParams["frequency"] as Int) == 0
                 val showVideoAd = videoAdParams["shouldRun"] as Boolean && swipeCount % (videoAdParams["frequency"] as Int) == 0
-
-                Log.d("AdDebug", "Swipe Count: $swipeCount")
-                Log.d("AdDebug", "Banner - shouldRun: ${bannerAdParams["shouldRun"]}, frequency: ${bannerAdParams["frequency"]}, Modulo: ${swipeCount % (bannerAdParams["frequency"] as Int)}, showBanner: $showBanner")
-                Log.d("AdDebug", "Interstitial - shouldRun: ${interAdParams["shouldRun"]}, frequency: ${interAdParams["frequency"]}, Modulo: ${swipeCount % (interAdParams["frequency"] as Int)}, showInterstitial: $showInterstitial")
-                Log.d("AdDebug", "VideoAd - shouldRun: ${videoAdParams["shouldRun"]}, frequency: ${videoAdParams["frequency"]}, Modulo: ${swipeCount % (videoAdParams["frequency"] as Int)}, showVideoAd: $showVideoAd")
-
-                // Show the appropriate ad based on frequency
+                
                 when {
                     showInterstitial -> {
                         currentVideoHolder?.adView?.visibility = View.GONE
