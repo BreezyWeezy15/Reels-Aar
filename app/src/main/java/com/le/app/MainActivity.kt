@@ -23,8 +23,6 @@ class MainActivity : AppCompatActivity() {
 
         startActivity(Intent(this, HomeActivity::class.java))
 
-        Reels.enableInterAd(this, true, 4)  // Show interstitial ad every 4 swipes
-        Reels.enableBannerAd(this, true, 2) // Show banner ad every 2 swipes
-        Reels.enableVideoAd(this, true, 2)  // Show video ad every 2 swipes
+
     }
 }
