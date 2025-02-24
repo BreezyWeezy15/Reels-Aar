@@ -163,32 +163,29 @@ class VideoAdapter(
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-
                 swipeCount++
 
-                val bannerAdParams = Reels.getBannerAdParams(context)
-                val interAdParams = Reels.getInterAdParams(context)
-                val videoAdParams = Reels.getVideoAdParams(context)
+                val bannerAdParams = Reels.getBannerAdParams()
+                val interAdParams = Reels.getInterAdParams()
+                val videoAdParams = Reels.getVideoAdParams()
 
                 Log.d("AdDebug", "Swipe Count: $swipeCount")
 
-                val shouldRunBanner = bannerAdParams["shouldRunBanner"] as? Boolean ?: false
-                val bannerFrequency = bannerAdParams["bannerFrequency"] as? Int ?: 1
+                val shouldRunBanner = bannerAdParams["shouldRunBanner"] as Boolean
+                val bannerFrequency = bannerAdParams["bannerFrequency"] as Int
                 val showBanner = shouldRunBanner && (swipeCount % bannerFrequency == 0)
 
-                val shouldRunInter = interAdParams["shouldRunInter"] as? Boolean ?: false
-                val interFrequency = interAdParams["interFrequency"] as? Int ?: 1
+                val shouldRunInter = interAdParams["shouldRunInter"] as Boolean
+                val interFrequency = interAdParams["interFrequency"] as Int
                 val showInterstitial = shouldRunInter && (swipeCount % interFrequency == 0)
 
-                val shouldRunVideo = videoAdParams["shouldRunVideo"] as? Boolean ?: false
-                val videoFrequency = videoAdParams["videoFrequency"] as? Int ?: 1
+                val shouldRunVideo = videoAdParams["shouldRunVideo"] as Boolean
+                val videoFrequency = videoAdParams["videoFrequency"] as Int
                 val showVideoAd = shouldRunVideo && (swipeCount % videoFrequency == 0)
 
                 Log.d("AdDebug", "Banner - shouldRun: $shouldRunBanner, frequency: $bannerFrequency, Modulo: ${swipeCount % bannerFrequency}, showBanner: $showBanner")
                 Log.d("AdDebug", "Interstitial - shouldRun: $shouldRunInter, frequency: $interFrequency, Modulo: ${swipeCount % interFrequency}, showInterstitial: $showInterstitial")
                 Log.d("AdDebug", "VideoAd - shouldRun: $shouldRunVideo, frequency: $videoFrequency, Modulo: ${swipeCount % videoFrequency}, showVideoAd: $showVideoAd")
-
-
 
                 when {
                     showInterstitial -> {
@@ -205,11 +202,14 @@ class VideoAdapter(
                     }
                     else -> {
                         currentVideoHolder?.adView?.visibility = View.GONE
+                        loadInterAd()
+                        loadRewardedVideoAd()
                     }
                 }
             }
         })
     }
+
 
 
     override fun getItemCount(): Int = videoPaths.size

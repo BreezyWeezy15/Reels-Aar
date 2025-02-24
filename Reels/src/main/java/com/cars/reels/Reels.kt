@@ -5,63 +5,38 @@ import android.util.Log
 
 
 object Reels {
+    private var shouldRunBanner: Boolean = false
+    private var bannerFrequency: Int = 1
 
-    private const val PREFS_NAME = "prefs"
+    private var shouldRunInter: Boolean = false
+    private var interFrequency: Int = 1
 
-    private fun setPreference(context: Context, key: String, value: Any) {
-        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        val editor = prefs.edit()
+    private var shouldRunVideo: Boolean = false
+    private var videoFrequency: Int = 1
 
-        when (value) {
-            is Boolean -> editor.putBoolean(key, value)
-            is Int -> editor.putInt(key, value)
-            else -> throw IllegalArgumentException("Unsupported preference type")
-        }
+    fun initialize(shouldRunBanner: Boolean, bannerFreq: Int,
+                   shouldRunInter: Boolean, interFreq: Int,
+                   shouldRunVideo: Boolean, videoFreq: Int) {
+        this.shouldRunBanner = shouldRunBanner
+        this.bannerFrequency = bannerFreq
 
-        editor.commit()
+        this.shouldRunInter = shouldRunInter
+        this.interFrequency = interFreq
+
+        this.shouldRunVideo = shouldRunVideo
+        this.videoFrequency = videoFreq
     }
 
-    fun enableBannerAd(context: Context, shouldRun: Boolean, frequency: Int) {
-        setPreference(context, "shouldRunBanner", shouldRun)
-        setPreference(context, "bannerFrequency", frequency)
-
-        Log.d("Banner Ad TAG","Banner Ad Has Been Called")
+    fun getBannerAdParams(): Map<String, Any> {
+        return mapOf("shouldRunBanner" to shouldRunBanner, "bannerFrequency" to bannerFrequency)
     }
 
-    fun enableInterAd(context: Context, shouldRun: Boolean, frequency: Int) {
-        setPreference(context, "shouldRunInter", shouldRun)
-        setPreference(context, "interFrequency", frequency)
+    fun getInterAdParams(): Map<String, Any> {
+        return mapOf("shouldRunInter" to shouldRunInter, "interFrequency" to interFrequency)
     }
 
-    fun enableVideoAd(context: Context, shouldRun: Boolean, frequency: Int) {
-        setPreference(context, "shouldRunVideo", shouldRun)
-        setPreference(context, "videoFrequency", frequency)
-    }
-
-    private fun getPreferences(context: Context, key: String, defaultValue: Any): Any {
-        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        return when (defaultValue) {
-            is Boolean -> prefs.getBoolean(key, defaultValue)
-            is Int -> prefs.getInt(key, defaultValue)
-            else -> throw IllegalArgumentException("Unsupported preference type")
-        }
-    }
-
-    fun getBannerAdParams(context: Context): Map<String, Any> {
-        val shouldRun = getPreferences(context, "shouldRunBanner",false) as Boolean
-        val frequency = getPreferences(context, "bannerFrequency", 2) as Int
-        return mapOf("shouldRunBanner" to shouldRun, "bannerFrequency" to frequency)
-    }
-
-    fun getInterAdParams(context: Context): Map<String, Any> {
-        val shouldRun = getPreferences(context, "shouldRunInter", false) as Boolean
-        val frequency = getPreferences(context, "interFrequency", 4) as Int
-        return mapOf("shouldRunInter" to shouldRun, "interFrequency" to frequency)
-    }
-
-    fun getVideoAdParams(context: Context): Map<String, Any> {
-        val shouldRun = getPreferences(context, "shouldRunVideo", false) as Boolean
-        val frequency = getPreferences(context, "videoFrequency", 6) as Int
-        return mapOf("shouldRunVideo" to shouldRun, "videoFrequency" to frequency)
+    fun getVideoAdParams(): Map<String, Any> {
+        return mapOf("shouldRunVideo" to shouldRunVideo, "videoFrequency" to videoFrequency)
     }
 }
+

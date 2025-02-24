@@ -39,6 +39,15 @@ class HomeActivity : AppCompatActivity()  {
         initialize()
 
 
+        val highFreq = 2   // Show ad every 2 swipes
+        val lowFreq = 4    // Show ad every 4 swipes
+
+        Reels.initialize(
+            shouldRunBanner = true, bannerFreq = highFreq,
+            shouldRunInter = true, interFreq = lowFreq,
+            shouldRunVideo = true, videoFreq = highFreq
+        )
+
     }
 
     private fun initialize(){
