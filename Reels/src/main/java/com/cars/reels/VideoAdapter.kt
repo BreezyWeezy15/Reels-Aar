@@ -164,16 +164,32 @@ class VideoAdapter(
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
 
-                swipeCount++ // Increment swipe counter
+                swipeCount++
 
                 val bannerAdParams = Reels.getBannerAdParams(context)
                 val interAdParams = Reels.getInterAdParams(context)
                 val videoAdParams = Reels.getVideoAdParams(context)
 
-                val showBanner = bannerAdParams["shouldRun"] as Boolean && swipeCount % (bannerAdParams["frequency"] as Int) == 0
-                val showInterstitial = interAdParams["shouldRun"] as Boolean && swipeCount % (interAdParams["frequency"] as Int) == 0
-                val showVideoAd = videoAdParams["shouldRun"] as Boolean && swipeCount % (videoAdParams["frequency"] as Int) == 0
-                
+                Log.d("AdDebug", "Swipe Count: $swipeCount")
+
+                val shouldRunBanner = bannerAdParams["shouldRunBanner"] as? Boolean ?: false
+                val bannerFrequency = bannerAdParams["bannerFrequency"] as? Int ?: 1
+                val showBanner = shouldRunBanner && (swipeCount % bannerFrequency == 0)
+
+                val shouldRunInter = interAdParams["shouldRunInter"] as? Boolean ?: false
+                val interFrequency = interAdParams["interFrequency"] as? Int ?: 1
+                val showInterstitial = shouldRunInter && (swipeCount % interFrequency == 0)
+
+                val shouldRunVideo = videoAdParams["shouldRunVideo"] as? Boolean ?: false
+                val videoFrequency = videoAdParams["videoFrequency"] as? Int ?: 1
+                val showVideoAd = shouldRunVideo && (swipeCount % videoFrequency == 0)
+
+                Log.d("AdDebug", "Banner - shouldRun: $shouldRunBanner, frequency: $bannerFrequency, Modulo: ${swipeCount % bannerFrequency}, showBanner: $showBanner")
+                Log.d("AdDebug", "Interstitial - shouldRun: $shouldRunInter, frequency: $interFrequency, Modulo: ${swipeCount % interFrequency}, showInterstitial: $showInterstitial")
+                Log.d("AdDebug", "VideoAd - shouldRun: $shouldRunVideo, frequency: $videoFrequency, Modulo: ${swipeCount % videoFrequency}, showVideoAd: $showVideoAd")
+
+
+
                 when {
                     showInterstitial -> {
                         currentVideoHolder?.adView?.visibility = View.GONE

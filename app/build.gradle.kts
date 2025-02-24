@@ -36,7 +36,7 @@ android {
 }
 
 dependencies {
-    implementation("com.google.android.gms:play-services-ads:22.6.0")
+    implementation(libs.play.services.ads)
     implementation(libs.androidx.viewpager2)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

@@ -21,8 +21,14 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        startActivity(Intent(this, HomeActivity::class.java))
+        Reels.enableInterAd(this, true, 1)
+        Reels.enableBannerAd(this, true, 1)
+        Reels.enableVideoAd(this, true, 1)
 
+
+        Intent(this, HomeActivity::class.java).apply {
+            startActivity(this)
+        }
 
     }
 }
